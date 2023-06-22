@@ -1,0 +1,29 @@
+{
+  "name": "google-clone-docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host  --port 8000",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "5.3.3",
+    "jspdf": "^2.5.1",
+    "react": "^18.2.0",
+    "react-contenteditable": "^3.3.6",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "6.4.4"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
+    "@types/pdfkit": "^0.12.8",
+    "@types/rangy": "^0.0.34",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3"
+  }
+}

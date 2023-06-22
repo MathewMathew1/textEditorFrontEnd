@@ -1,0 +1,192 @@
+.option-style {
+  padding: 0.1rem 0.4rem;
+  border-radius: 0%;
+  background: none;
+	color: inherit;
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+
+.button-div{
+  background-color: transparent;
+  border: none;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0%;
+  display: flex;
+  justify-content: center;
+}
+
+.button-div:focus {
+  outline: none;
+  border: none;
+}
+
+.button-select{
+  background-color: transparent;
+  border: none !important;
+  padding: 0.5rem 0.4rem;
+  border-radius: 0%;
+  outline: none !important;
+}
+
+.padding0{
+  padding: 0 !important;
+}
+
+.value-button{
+  height: 100%;
+  border-radius: 0%;
+  padding: 0 4px 0 4px;
+  border: 1px solid #dadce0;
+  font-size: 20px;
+}
+
+.value-button:active{
+  color: blue !important;
+  background-color: var(--hover-blue) !important;
+}
+
+.value-number{
+  height: 100%;
+  margin:0;
+  border-left: none;
+  border-right: none;
+
+  padding: 0 8px 0 8px;
+  width: 1.6rem;
+  text-align: center;
+  font-size: 15px;
+}
+
+.value-number:focus{
+  background-color: white !important;
+}
+
+.paper-doc, .backdrop{
+  cursor: text;
+
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  box-shadow: 0 1px 3px 1px rgb(60 64 67 / 15%);
+  background-color: white;
+  height:842pt;
+  width:595pt;
+  outline: none;
+  resize: none;
+
+}
+
+.paper-doc{
+  background-color: transparent;
+  z-index: 2;
+}
+
+.paper-area{
+  text-align: left;
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  background: none;
+ 
+  min-width: 100%;
+  width: fit-content;
+  white-space: nowrap;
+  height: fit-content;
+}
+
+.paper-area-scroll{
+  position: relative;
+  overflow-y: auto;
+  height: 690px;
+  min-width: 100%;
+  width: fit-content;
+}
+
+.paper-area-container{
+  height: 100%;
+  max-height: max-content;
+  min-width: fit-content;
+  justify-items: center;
+  justify-content: end;
+  display: flex;
+}
+
+
+
+.document-container{
+  width: 100vw;
+ height: 690px;
+  overflow-x:auto;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.left-sidebar-container-content {
+  overflow: hidden;
+  width: 100px;
+}
+
+.document-area{
+  justify-content: left;
+  left: 0;
+  margin-left: 0;
+  display:flex;
+  flex-direction: column;
+  min-width: 100%;
+  width: fit-content;
+  
+}
+
+.backdrop {
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  overflow: hidden;
+  pointer-events: none;
+  transition: transform 1s;
+}
+
+mark {
+  color: transparent;
+  background-color: #d4e9ab; /* or whatever */
+}
+
+.mark-highlighted{
+  background-color: pink;
+}
+
+.highlights {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	color: transparent !important;
+  z-index: 0;
+  
+}
+
+.line-break::before {
+  content: "¶";
+    color: blue;
+    display: inline-block;
+    width: 0;
+}
+
+.space-ball::before {
+  content: "•";
+  color: blue;
+  display: inline-block;
+  width: 0;
+}
+
+.page-line{
+  position: absolute;
+  width: 210mm;
+  background-color: black;
+  height: 1px;
+}
+
+
+

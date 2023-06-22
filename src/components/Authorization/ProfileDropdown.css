@@ -1,0 +1,44 @@
+.profile-dropdown{
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    z-index: 10;
+    padding: 0.4rem 0 ;
+    right: 0%;
+    user-select: none;
+    text-align: left;
+    min-width: 120px;
+}
+
+.profile-dropdown > div {
+    padding: 0.4rem 1rem;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-button{
+    background-color: transparent;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 0%;
+    display: flex;
+    text-align: left;
+    width: 100%;
+    outline: none;
+    color: black;
+}
+
+.dropdown-button:active {
+    border: none;
+    outline: none
+}
+
+.profile-dropdown > button:hover {
+    background-color: var(--hover-grey);
+}
+
+
+
+
+

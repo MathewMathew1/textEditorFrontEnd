@@ -1,0 +1,21 @@
+
+.cell-resize-container{
+  position: absolute;
+}
+
+.cell-vertical-line{
+  position: absolute;
+  cursor: col-resize;
+  width: 1px;
+  background-color: blue;
+  z-index: 3;
+}
+
+.cell-horizontal-line{
+  position: absolute;
+  height: 1px;
+  background-color: blue;
+  z-index: 3;
+  cursor: row-resize;
+}
+

@@ -1,0 +1,104 @@
+.ruler-container{
+  height: 20px;
+
+  z-index: 5;
+  position: sticky;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  background-color: #e8eaed;
+  border-bottom: 1px solid #dadce0;
+  min-width: 100%;
+  max-width: inherit;
+}
+
+
+
+.ruler {
+  position: relative;
+  height: 14px;
+  display: flex;
+}
+
+.ruler .cm,
+.ruler .mm {
+  position: relative;
+ 
+}
+
+
+
+.ruler .cm {
+  display: flex;
+  height: 14px;
+  width: 1cm;
+
+}
+
+.ruler .mm {
+  border-left: 1px solid #666;
+  width: 1px;
+  height: 5px;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.ruler .cm .label {
+  position: absolute;
+  left: -3px;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  font: 10px/1 sans-serif;
+  color: navy;
+}
+
+
+.ruler .indicator {
+  position: absolute;
+  width: 0; 
+  height: 0; 
+  top: 30px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid salmon;
+  opacity: 0.7;
+}
+
+.blue-triangle{
+
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  
+  border-top: 7px solid rgb(52, 37, 189);
+  position: absolute;
+  bottom: 0;
+  
+  cursor: move;
+  z-index: 1000;
+}
+
+.blue-square{
+  position: absolute;
+  height: 7px;
+  width: 14px;
+  background-color: rgb(52, 37, 189);
+  bottom: 10px;
+  cursor: move;
+  z-index: 1000;
+}
+
+.blue-line{
+  height:297mm;
+  position: absolute;
+ 
+  z-index: 5;
+  border: 1px blue solid;
+  top: 100%;
+}
+

@@ -1,0 +1,112 @@
+.link-modal{
+    left: 50%;
+    overflow-x: hidden;
+    z-index: 100;
+    max-width: 350px;
+    min-width: 200px;
+    background-color: white;
+    max-height: 450px;
+    overflow: auto;
+    flex-direction: column;
+    position: absolute;
+    top: 100px;
+    background-color: #fff;
+    border-color: #dadce0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 1px rgb(60 64 67 / 15%);
+}
+
+.link-input{
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #3c4043;
+    padding: 1px 8px;
+    font-size: 14px;
+    height: 36px;
+    margin: 8px 0;
+    
+}
+
+.link-label{
+    background-color: white;
+    box-shadow: 5px 0 0 white, -5px 0 0 white;
+    color: #5f6368;
+    display: inline;
+    font-size: 12px;
+    left: 12px;
+    margin-bottom: 0;
+    max-width: 300px;
+    padding: 0;
+    position: absolute;
+    top: -8px;
+    word-wrap: break-word;
+}
+
+.link-input-group{
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.link-input-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    padding: 0.4rem 0.5rem;
+    
+}
+
+.apply-button{
+    margin-left: 0.6rem;
+    padding: 0.4rem;
+    height: fit-content;
+    justify-self: center;
+    display:inline;
+}
+
+.apply-button:not(:disabled) {
+    color: blue;
+}
+.apply-button:not([disabled]):hover {
+    background-color: rgb(26, 115, 232, 0.2);
+    color: #174ea6;
+}
+
+.image-link-input, .image-link-input:focus{
+    border-width: 0 0 2px 0;
+    border-color: #5e97f6;
+    border-style: solid;
+    margin-top: 24px;
+    padding-bottom: 6px;
+    width: 400px;
+    outline: none;
+}
+
+.link-image-container{
+    display: flex;
+    margin: 1rem 2rem;
+    align-items: left;
+    flex-direction: column;
+}
+
+.link-image-container >  div{
+    text-align: left;
+}
+
+.btn-image-link-group{
+    display: flex;
+    justify-content: right;
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+
+.image-link-shown-container{
+    position: relative;
+}
+
+.close-image-preview{
+    position: absolute;
+    right: 0px;
+    top: 0px
+}

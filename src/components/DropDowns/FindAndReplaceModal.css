@@ -1,0 +1,69 @@
+.find-and-replace-modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.find-and-replace-modal h2 {
+    text-align: left;
+}
+
+.inputs-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.input-group{
+    display: flex;
+    align-items: center;
+}
+
+
+.input-group label {
+    flex-basis: auto;
+    flex-grow: 1;
+    text-align: left;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.input-group input {
+    width: 300px;
+}
+
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .input-container input {
+    flex-grow: 1;
+    padding-right: 80px;
+  }
+  
+  .end-text {
+    position: absolute;
+    right: 0;
+    padding-right: 5px;
+  }
+
+ .far-button-group{
+    display: flex;
+    gap: 0.4rem;
+ }
+
+  .checkbox-container{
+    display: flex;
+    text-align: left;
+  }
+  

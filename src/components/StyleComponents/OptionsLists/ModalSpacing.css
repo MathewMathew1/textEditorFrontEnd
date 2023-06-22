@@ -1,0 +1,39 @@
+
+
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: fit-content; /* Could be more or less, depending on screen size */
+}
+
+
+.number-input{
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #3c4043;
+  padding: 1px 8px;
+  font-size: 14px;
+  height: 36px;
+  margin: 8px 0;
+  width: 50px;
+}
+
+.label-flex{
+  display: flex;
+  justify-content: start;
+  
+  align-items: center;
+}
+
+.margin-small{
+  margin-right: 0.4rem;
+}
+
+.button-group{
+  margin-top: 4rem;
+}

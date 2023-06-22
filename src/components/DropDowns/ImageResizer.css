@@ -1,0 +1,64 @@
+.image-rectangle{
+  
+  border: 1px solid blue;
+  z-index: 100;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
+.image-rectangle>*{
+  z-index: 6645645;
+  transform: translateZ(12px);
+}
+
+.image-resizer-wrapper {
+  z-index: 10;
+  position: absolute;
+  transform-origin: top left;
+  user-select: none;
+}
+
+
+
+.circle-rotation-container {
+  position: absolute;
+  left: 50%;
+}
+
+.circle-container{
+  position: absolute;
+}
+
+.circle-rotater{
+  position:absolute;
+  width: 8px;
+  height: 8px;
+  background-color: blue;
+  border-radius: 50%;
+  bottom: 15px;
+  left: -4px;
+  z-index: 40;
+  cursor: crosshair;
+}
+
+.rotater-line{
+  position:absolute;
+  width: 2px;
+  height: 30px;
+  background-color: blue;
+  left: -1px;
+  bottom: -10px;
+  z-index: 40;
+}
+
+
+
+
+
+
+
+
+
+
+
+

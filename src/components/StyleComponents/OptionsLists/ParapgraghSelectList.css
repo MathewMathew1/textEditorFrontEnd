@@ -1,0 +1,10 @@
+.paragraph-spacing > * > *{
+    text-align: left;
+    margin-left: 1rem;
+    font-size: 14px;
+    
+}
+
+.paragraph-spacing > div {
+    padding: 0.4rem 0rem;
+}

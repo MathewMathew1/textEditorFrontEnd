@@ -1,0 +1,16 @@
+.template-container{
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    height: calc(297mm * 0.3 + 50px);;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.template-title{
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-bottom: 1px solid #e2e2e2;
+}
+

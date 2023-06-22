@@ -1,0 +1,167 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  height: fit-content;
+}
+
+.templates-container{
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.docs-home-screen{
+  flex-wrap: wrap;
+  text-align: left;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.docs-home-screen-content{
+
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: start;
+  padding-left: 2rem;
+}
+
+.template-editor {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+
+  background-color: white;
+  height:297mm;
+  width:210mm;
+  
+  overflow-x: auto;
+}
+
+
+
+.template:hover{
+  cursor: pointer;
+  border: 1px solid blue;
+  border-color: blue;
+}
+
+.container-document-info{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 14px;
+  height: 60px;
+}
+
+.main-page{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+ /* Use viewport height for full-page height */
+  overflow-y: auto;
+}
+
+.paper p{
+  margin: 0;
+}
+
+.template {
+  border: 1px solid #dfe1e5;
+  height:calc(297mm * 0.3 + 61px);
+  width:calc(210mm * 0.3);
+  text-align: left;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.template-title{
+  height: 30px;
+}
+
+.withoutInfo {
+  height:calc(297mm * 0.3 + 31px);
+}
+
+.user-info-container{
+  margin: 1rem 2rem 2rem 2rem;
+  display: flex;
+  justify-content: right;
+}
+
+.no-documents-found{
+  margin-top: 2rem;
+  padding: 0.2rem;
+  font-size: 22px;
+  text-align: center;
+  width: 100%;
+}
+
+.flex-row{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.dots-container{
+  flex: 1;
+  display: flex;
+  justify-content: right;
+}
+
+.dots{
+  display: flex;
+  justify-content: center;
+  border-radius: 50% !important;
+}
+
+.dots:hover{
+  background-color: var(--hover-grey);
+}
+
+.option-dropdown{
+  position: absolute;
+  background-color: white;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  top: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 0px;
+  right: 0
+}
+
+.option-dropdown > * {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 3rem 0.8rem 1rem  !important;
+  text-align: left !important;
+  justify-content: left !important;
+}
+
+.option-dropdown > *:hover{
+  background-color: var(--hover-grey);
+}
+
+.container-documents{
+  width: 100%;
+  display: flex;
+  justify-content: top;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  height: fit-content;
+  flex-direction: column;
+  background-color: white;
+  flex: 1;
+}

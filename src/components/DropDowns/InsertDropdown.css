@@ -1,0 +1,20 @@
+.container-table-input{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 0.2rem;
+  margin-left: 0.5rem;
+}
+ 
+
+.container-table-input {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns of equal size */
+  grid-gap: 10px; /* Gap between grid items */
+}
+
+.container-table-input >.label {
+  grid-column: 1; /* Place labels in the first column */
+}
+
+
