@@ -180,7 +180,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
         userUpdate.saveDocument(textDocument.value, originalDocument._id, storedInDatabase);
       },[textDocument.value,originalDocument._id, storedInDatabase])
 
-    const debouncedText = useDebounce(textDocument.value, 2000, onSave);
+    const debouncedText = useDebounce(textDocument.value, 1000, onSave);
 
     const updateTitle = (title: string) => {
         setTitle(title)
