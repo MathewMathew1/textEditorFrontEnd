@@ -23,14 +23,14 @@ const FileDropdown = ({titleInput}:{titleInput: React.RefObject<HTMLInputElement
         setIsComponentVisible: setIsTemplatesOpenModalVisible } = useComponentVisible<HTMLDivElement>(false);
     const navigate = useNavigate()
 
-    const downLoadPdf = async () => {
+    /*const downLoadPdf = async () => {
         const contentCanvas = await html2canvas(editorValues.markdownInput.current!);
         const image = contentCanvas.toDataURL("image/png");
         const doc = new jsPDF();
         doc.addImage(image, "png", 0, 0);
   
         doc.save('document.pdf');
-    }
+    }*/
 
     const downLoadText = async () => {
        const text = editorValues.markdownInput.current!.textContent!;
@@ -154,10 +154,6 @@ const FileDropdown = ({titleInput}:{titleInput: React.RefObject<HTMLInputElement
                                 <div className="right-triangle"></div>
                             </button>
                             <div style={{minWidth: "250px"}} className="sidebar-content right">
-                    
-                                <button onClick={()=>downLoadPdf()} className="button-div dropdown-option ">
-                                    <div className="text-option-dropdown">Pdf Document (.pdf)</div>
-                                </button>
                                 <button onClick={()=>downLoadText()} className="button-div dropdown-option ">
                                     <div className="text-option-dropdown">Plain text (.text)</div>
                                 </button>

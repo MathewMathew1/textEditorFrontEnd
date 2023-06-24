@@ -8,9 +8,9 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     BASE_ROUTE_URL = "http://localhost:3000"
 }
 else{
-    BASE_API_ROUTES_URL = "https://shopik-api.onrender.com/api/v1"
+    BASE_API_ROUTES_URL = "https://texteditor-production-eaf9.up.railway.app/.onrender.com/api/v1"
     SITE_ROUTE_URL = "https://shopik.onrender.com"
-    BASE_ROUTE_URL = "http://localhost:3000"
+    BASE_ROUTE_URL = "https://texteditor-production-eaf9.up.railway.app/"
 }
 
 const googleSignUpRoute = BASE_API_ROUTES_URL + "/user/google/auth"
