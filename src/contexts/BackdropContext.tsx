@@ -264,14 +264,15 @@ const BackdropProvider = ({ children }: {children: React.ReactNode}): JSX.Elemen
         return {text: dummyElement.innerHTML, count}
     }
 
-    function findTextAfterLastMarkNode(elements: ChildNode[]): HTMLElement | null {
-        const markNode = elements.findLast((element)=>element.nodeName==="MARK")
+    const findTextAfterLastMarkNode = (elements: ChildNode[]): HTMLElement | null => {
+        const reversedElements = [...elements].reverse();
+        const markNode = reversedElements.find((element) => element.nodeName === 'MARK');
 
         if (!markNode) {
-            return null
-        } 
+            return null;
+        }
 
-        return markNode.nextSibling as HTMLElement; 
+        return markNode.nextSibling as HTMLElement;
     }
 
     
