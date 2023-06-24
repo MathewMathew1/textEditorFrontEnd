@@ -1,7 +1,4 @@
 import { Folder, Download, Pencil, Delete, Print, File } from "../../svgs/svgs";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import JSZip from "JSZip";
 import { mainFonts } from "../../Utilities/fonts";
 import { htmlDocument } from "../../Utilities/html";
 import { useEditor } from "../Editor";
@@ -47,7 +44,7 @@ const FileDropdown = ({titleInput}:{titleInput: React.RefObject<HTMLInputElement
         a.click();
     }
 
-    const downloadHtmlZipFile = () => {
+   /* const downloadHtmlZipFile = () => {
         const text = htmlDocument(editorValues.textDocument.value)
         const zip = new JSZip();
         zip.file(`${editorValues.title}.html`, text);
@@ -58,7 +55,7 @@ const FileDropdown = ({titleInput}:{titleInput: React.RefObject<HTMLInputElement
                 a.href = URL.createObjectURL(blob);
                 a.click();
             });
-    }
+    }*/
 
     async function downloadDocxFile() {
         const preHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -159,9 +156,6 @@ const FileDropdown = ({titleInput}:{titleInput: React.RefObject<HTMLInputElement
                                 </button>
                                 <button onClick={()=>downloadDocxFile()} className="button-div dropdown-option ">
                                     <div className="text-option-dropdown">MicrosoftWord (.docx)</div>
-                                </button>
-                                <button onClick={()=>downloadHtmlZipFile()} className="button-div dropdown-option ">
-                                    <div className="text-option-dropdown">Web Page (.html, zipped)</div>
                                 </button>
                             </div>
                         </div>
