@@ -57,13 +57,13 @@ const Toolbar = () => {
             }
             const clampedValue = clamp(value, FONT_SIZE_BOUNDARY.MIN, FONT_SIZE_BOUNDARY.MAX)
 
-            editorUpdate.addStylingToSpan({styleProperty: "fontSize", styleValue: `${clampedValue}pt`, passedRange: editorValues.savedSelection, 
+            editorUpdate.addStylingToSpan({styleProperty: "fontSize", styleValue: `${clampedValue}px`, passedRange: editorValues.savedSelection, 
             callbackFunction : (element)=> {
                 let newFontSize = clampedValue
                 if(element.style.verticalAlign === "sub" || element.style.verticalAlign === "super"){
                     newFontSize = clampedValue * 0.8
                 }
-                element.style.fontSize = `${newFontSize}pt`
+                element.style.fontSize = `${newFontSize}px`
             }})
         }
     }
@@ -76,7 +76,7 @@ const Toolbar = () => {
         }
 
         const newValue = clamp(baseValue + addedValue, FONT_SIZE_BOUNDARY.MIN, FONT_SIZE_BOUNDARY.MAX)
-        element.style.fontSize = `${newValue}pt`
+        element.style.fontSize = `${newValue}px`
     }   
 
     const changeBackgroundColor = (color: string) => {
