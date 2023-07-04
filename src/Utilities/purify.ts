@@ -11,8 +11,8 @@ const purifyDocument = async (text: string) => {
         });
     
         if (response.ok) {
-          const responseData = await response.text();
-          return responseData;
+          const json = await response.json()
+          return json.text;
         } else {
           throw new Error('Request failed');
         }

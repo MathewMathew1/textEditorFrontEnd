@@ -216,11 +216,15 @@ const DocumentFormat = () => {
           
             if (selection && selection.isCollapsed) {
                 const columnParent = findColumnParent(range.startContainer as HTMLElement)
-                const selectionStartsAtBeginningOfColumn = columnParent?.firstChild === range.startContainer || 
-                    isNestedFirstChild(range.startContainer as HTMLElement, columnParent!) && range.startOffset === 0
+                const selectionStartsAtBeginningOfColumn = elementIsAtStartOfColumn(columnParent, range.startContainer as HTMLElement) && range.startOffset === 0
                 const deletedElementIsSpanInTable = range.startOffset ===1 && range.startContainer.parentNode?.parentNode?.nodeName === "TD"
+                const previousSibling = range.startContainer.parentNode?.previousSibling as HTMLElement
+                
+                const previousSiblingIsStartOfColumn = previousSibling? elementIsAtStartOfColumn(columnParent, previousSibling) && range.startOffset === 0
+                : false
 
-                if (selectionStartsAtBeginningOfColumn || deletedElementIsSpanInTable) {
+                if (selectionStartsAtBeginningOfColumn || deletedElementIsSpanInTable || 
+                    (previousSiblingIsStartOfColumn && (previousSibling.textContent==="" || previousSibling.innerHTML===String.fromCharCode(8203)))) {
                     event.preventDefault()
                 }
             }
@@ -230,6 +234,10 @@ const DocumentFormat = () => {
             }
         }   
     }, [editorValues.textDocument]);
+
+    const elementIsAtStartOfColumn = (columnParent: HTMLElement|null, element: HTMLElement) => {
+       return columnParent?.firstChild === element || isNestedFirstChild(element , columnParent!) 
+    }
 
     const handleClick = useCallback((e: MouseEvent) => {
         if (e.target instanceof HTMLTableCellElement) {

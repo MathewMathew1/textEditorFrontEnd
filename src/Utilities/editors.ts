@@ -729,14 +729,24 @@ const getDeepestNonTextNode = (node: Node) => {
 
 const getFurthestDeletableNode = (child: HTMLElement, parent: HTMLElement, range: Range, grandparent: HTMLElement) => {
     let currentElement = child;
-    if(!range.intersectsNode(currentElement) || grandparent===currentElement || currentElement===parent) return null
-
+    const nodeRange = document.createRange();
+    nodeRange.selectNodeContents(currentElement);
+    let nodeIsFullyInRange = nodeRange.compareBoundaryPoints(Range.START_TO_START, range) >= 0  && 
+    nodeRange.compareBoundaryPoints(Range.END_TO_END, range) === -1
+    
+    if(!nodeIsFullyInRange || grandparent===currentElement || currentElement===parent) return null
+    
     while (currentElement) {
-        const nextELementIsNotDeletable = !range.intersectsNode(currentElement.parentNode!) || isNestedFirstChild(currentElement.parentNode! as HTMLElement,parent) ||
+        nodeRange.selectNodeContents(currentElement.parentNode!);
+        nodeIsFullyInRange = nodeRange.compareBoundaryPoints(Range.START_TO_START, range) >= 0  && 
+            nodeRange.compareBoundaryPoints(Range.END_TO_END, range) === -1
+
+        const nextELementIsNotDeletable = !nodeIsFullyInRange || isNestedFirstChild(currentElement.parentNode! as HTMLElement,parent) ||
         grandparent===currentElement.parentNode || currentElement.parentNode===parent || currentElement.parentNode===null
         if (nextELementIsNotDeletable) {
             return currentElement;
         }
+        
         currentElement = currentElement.parentNode as HTMLElement;
     }
     return null
@@ -745,10 +755,10 @@ const getFurthestDeletableNode = (child: HTMLElement, parent: HTMLElement, range
 const isNestedFirstChild = (child: HTMLElement, parent: HTMLElement): boolean => {
     let currentChild = parent;
     while (currentChild) {
-    if (currentChild === child) {
-        return true;
-    }
-    currentChild = currentChild.firstChild as HTMLElement;
+        if (currentChild === child) {
+            return true;
+        }
+        currentChild = currentChild.firstChild as HTMLElement;
     }
     return false;
 }

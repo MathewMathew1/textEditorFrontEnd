@@ -59,6 +59,7 @@ const TextDocumentComponent = () => {
                 let foundDocument = storedDocumentsParsed.find((document)=>document._id===id)
                 if(foundDocument){
                     const newText = await purifyDocument(foundDocument.text)
+
                     if(!newText) {
                         foundDocument = undefined
                     } 

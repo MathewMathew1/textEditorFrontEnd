@@ -760,15 +760,18 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
         imagesNodes.forEach((image)=>{
             (image as HTMLElement).remove()
         })
-        textNodes.forEach((node, index)=>{
+
+        textNodes.reverse().forEach((node, index)=>{
             const element = node as HTMLElement
+
             const newText = getTextOutsideRange(node, range)
             
-            node.textContent = newText.text
             const columnParent = findColumnParent(node as HTMLElement)
             const selectionStartsAtBeginningOfColumn = columnParent?.firstChild === element || isNestedFirstChild(element, columnParent!) 
             const textIsInTable = node.parentNode?.parentNode?.nodeName === "TD"
-            const tableInNotCoveredBySelection = !selection?.containsNode(node.parentNode?.parentNode?.parentNode?.parentNode!)
+
+            const tableInNotCoveredBySelection = node.parentNode?.parentNode?.parentNode?.parentNode?
+             !selection?.containsNode(node.parentNode?.parentNode?.parentNode?.parentNode!): false
 
             if (selectionStartsAtBeginningOfColumn || (textIsInTable && tableInNotCoveredBySelection )) {
                 if(newText.text===""){
@@ -780,6 +783,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
                     }
                 }
                 else{
+                    node.textContent = newText.text
                     if(index===0){
                         rangeToRestore.setStart(element, newText.startingPosition )
                         rangeToRestore.setEnd(element, newText.startingPosition )
@@ -788,9 +792,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
             }
             else{
                 if(newText.text===""){
-         
                     const elementToDelete = getFurthestDeletableNode(element, columnParent!, range, markdownInput.current!)
-                    
                     if(elementToDelete){
                         if(index===0){
                             rangeToRestore.setStartBefore(elementToDelete)
@@ -798,9 +800,12 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
                             // restore
                         }
                         elementToDelete.remove()
+                    }else{
+                        node.textContent = newText.text
                     }
                 }
                 else{
+                    node.textContent = newText.text
                     rangeToRestore.setStart(element, newText.startingPosition )
                     rangeToRestore.setEnd(element, newText.startingPosition )
                 }

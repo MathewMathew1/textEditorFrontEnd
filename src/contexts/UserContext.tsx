@@ -231,6 +231,7 @@ const UserProvider = ({ children }: {children: React.ReactNode}): JSX.Element =>
                 if(index!==-1){
                     storedDocumentsParsed.splice(index, 1)
                     userDocuments.removeByKey("_id", idOfDocument)
+                    localStorage.setItem("documents", JSON.stringify(storedDocumentsParsed))
                 }else{
                     updateSnackBars.addSnackBar({snackbarText: "Unable to delete document", severity: severityColors.error})
                 }
@@ -263,6 +264,7 @@ const UserProvider = ({ children }: {children: React.ReactNode}): JSX.Element =>
                     updateSnackBars.addSnackBar({snackbarText: "Unable to create new text Document, try again", severity: severityColors.error})
                     return null;
                 } else {
+                    userDocuments.push(json.textDocument)
                   return json.textDocument._id;
                 }
             } catch (error) {
@@ -271,7 +273,6 @@ const UserProvider = ({ children }: {children: React.ReactNode}): JSX.Element =>
                 return null;
             }
         }
-      
         const newText = await purifyDocument(text)
         if(!newText){
             updateSnackBars.addSnackBar({snackbarText: "Unable to create new text Document, try again", severity: severityColors.error})
@@ -290,9 +291,14 @@ const UserProvider = ({ children }: {children: React.ReactNode}): JSX.Element =>
         if(storedDocuments){
             let storedDocumentsParsed: TextDocument[] = JSON.parse(storedDocuments)
             newUpdatedDocuments = storedDocumentsParsed
+            newUpdatedDocuments.push(newDocument)
+        }else{
+            newUpdatedDocuments.push(newDocument)
         }
-        
+        userDocuments.push(newDocument)
+  
         localStorage.setItem("documents", JSON.stringify(newUpdatedDocuments))
+
         return newDocument._id
     }
 
@@ -358,6 +364,7 @@ const UserProvider = ({ children }: {children: React.ReactNode}): JSX.Element =>
                 if(index!==-1){
                     storedDocumentsParsed[index].text = text
                     userDocuments.updateObjectByKey("_id", id, [{field: "text", fieldValue: text}] )
+                    localStorage.setItem("documents", JSON.stringify(storedDocumentsParsed))
                 }
             }
         }
