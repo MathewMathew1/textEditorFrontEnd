@@ -1,5 +1,5 @@
 import { Delete, GoBack, GoForward, Cut, Copy, Paste, SelectAll, Replace } from "../../svgs/svgs";
-import { useEditor } from "../Editor";
+import { useEditor } from "../../contexts/UseEditorProvider"
 import useComponentVisible from "../../customhooks/useComponentVisiblity";
 import { useCallback, useEffect } from "react";
 import FindAndReplaceModal from "./FindAndReplaceModal";

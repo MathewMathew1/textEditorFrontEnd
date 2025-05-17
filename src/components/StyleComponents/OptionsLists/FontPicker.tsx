@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useComponentVisible from "../../../customhooks/useComponentVisiblity";
 import useValueHistory from "../../../customhooks/useValueHistory";
 import { Fonts } from "../../../types";
-import { useEditor, useEditorUpdate } from "../../Editor";
+import { useEditor, useEditorUpdate } from "../../../contexts/UseEditorProvider";
 import "./OptionLists.css";
 
 const FontPicker = () => {

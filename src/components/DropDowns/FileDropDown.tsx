@@ -1,7 +1,7 @@
 import { Folder, Download, Pencil, Delete, Print, File } from "../../svgs/svgs";
 import { mainFonts } from "../../Utilities/fonts";
 import { htmlDocument } from "../../Utilities/html";
-import { useEditor } from "../Editor";
+import { useEditor } from "../../contexts/UseEditorProvider"
 import useComponentVisible from "../../customhooks/useComponentVisiblity";
 import { useEffect } from "react";
 import { useUser, useUserUpdate } from "../../contexts/UserContext";

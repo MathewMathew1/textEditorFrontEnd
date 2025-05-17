@@ -1,5 +1,5 @@
 import { Download, Image, Link, Table } from "../../svgs/svgs";
-import { useEditor, useEditorUpdate } from "../Editor";
+import { useEditor, useEditorUpdate } from "../../contexts/UseEditorProvider";
 import useComponentVisible from "../../customhooks/useComponentVisiblity";
 import { useRef, useState } from "react";
 import ModalImageLink from "../StyleComponents/MiniModals/ModalImageLink";

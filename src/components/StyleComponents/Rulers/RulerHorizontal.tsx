@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "./RulerHorizontal.css";
 import { clamp } from '../../../Utilities/colors';
-import { useEditor, useEditorUpdate } from '../../Editor';
+import { useEditor, useEditorUpdate } from '../../../contexts/UseEditorProvider'
 
 const MARGIN_MINIMAL_DISTANCE = 32
 const MINIMAL_COLUMN_WIDTH = 40

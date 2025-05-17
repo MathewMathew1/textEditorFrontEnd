@@ -1,5 +1,5 @@
 import { Warning } from "../svgs/svgs";
-import { useEditor, useEditorUpdate } from "./Editor";
+import { useEditor, useEditorUpdate } from "../contexts/UseEditorProvider";
 import { File } from "../svgs/svgs";
 import "./Filebar.css";
 import FileDropdown from "./DropDowns/FileDropDown";

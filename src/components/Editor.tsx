@@ -11,6 +11,10 @@ import useSelection from "../customhooks/useSelection";
 import { TextDocument } from "../types";
 import { useUserUpdate } from "../contexts/UserContext";
 import useDebounce from "../customhooks/useDebounce";
+import { EditorContext, EditorUpdate } from "../contexts/UseEditorProvider";
+import useEditorState from "../contexts/useEditorState";
+import useHandleDocument from "../contexts/useHandleDocument";
+import useDocumentLoader from "../contexts/useDocumentLoader";
 
 const OPPOSITE_VALUES = {
     fontWeight: "normal",
@@ -33,207 +37,42 @@ const DEFAULT_VALUES = {
     Font: "Times New Roman"
 }
 
-type EditorContextProps = {    
-    spellCheck: boolean; 
-    marginLeft: string;
-    marginRight: string;
-    scale: string;
-    fontSize: string;
-    textBolded: boolean;
-    textItalic: boolean;  
-    textUnderScore: boolean;
-    color: string
-    
-    comment: boolean
-    backgroundColor: string
-    font: string
-    convertedMarkdown: string
-    offsetForRuler: number
-    markdownInput: React.RefObject<HTMLDivElement>
-    savedSelection: Range | null
-    align: string
-    realDocument: boolean
-    numberedList: boolean
-    bulletedList: boolean
-    currentPage: number
-    documentId: string
-    paddingBottom: number
-    paddingTop: number
-    link: string
-    textDocument: {
-        value: string;
-        saveValue: (newValue: string, changeHistory: boolean, pastedChange: boolean, alwaysOverwrite?: boolean | undefined) => void;
-        undo: () => void;
-        redo: () => void;
-    }
-    title: string
-    showRuler: boolean
-    columnLayoutOnSelectedPage: {
-        columns: number;
-        currentColumn: number;
-        widths: string[];
-        currentColumnReference: null | HTMLElement;
-    }
-}
 
-type EditorUpdateProps = {  
-    setSpellCheck: React.Dispatch<React.SetStateAction<boolean>>
-    setScale: React.Dispatch<React.SetStateAction<string>>
-    updateTitle: (title: string) => void
-    setFontSize: React.Dispatch<React.SetStateAction<string>>
-    setTextBolded: React.Dispatch<React.SetStateAction<boolean>>
-    setTextItalic: React.Dispatch<React.SetStateAction<boolean>>
-    setTextUnderScore: React.Dispatch<React.SetStateAction<boolean>>
-    setColor: React.Dispatch<React.SetStateAction<string>>
-    setComment: React.Dispatch<React.SetStateAction<boolean>>
-    setBackgroundColor: React.Dispatch<React.SetStateAction<string>>
-    setConvertedMarkdown: React.Dispatch<React.SetStateAction<string>>
-    setOffsetForRuler: React.Dispatch<React.SetStateAction<number>>
-    setFont: React.Dispatch<React.SetStateAction<string>>
-    setAlign: React.Dispatch<React.SetStateAction<string>>
-    setShowRuler: React.Dispatch<React.SetStateAction<boolean>>
-    setLink: React.Dispatch<React.SetStateAction<string>>
-    deleteSelection: () => void
-    updatePageSpan: ({ passedRange, callback }: {
-        passedRange?: Range | null | undefined;
-        callback: (element: HTMLElement) => void;
-    }) => void
-    addList: (listType: string) => void
-    addStylingToSpan: ({ styleProperty, styleValue, haveOppositeValue, callbackFunction }: {
-        styleProperty: string;
-        styleValue: string;
-        haveOppositeValue?: boolean;
-        passedRange?: Range|null
-        callbackFunction?: (element: HTMLElement, styleProperty: string, styleValue: string, sameValue: boolean) => void | undefined;
-    }) => void
-    updateParagraphs: ({property, propertyValue, callback, passedRange}:
-    {
-        property: string, 
-        propertyValue: string, 
-        callback?: (paragraph: HTMLElement, value: string) => void | undefined ,
-        passedRange?: Range|null,
-    }) => void
-    addLink: ({ linkName, linkText, passedRange }: {
-        linkName: string;
-        linkText?: string | undefined;
-        passedRange?: Range | null;
-    }) => void
-    setColumnLayoutOnSelectedPage: React.Dispatch<React.SetStateAction<{
-        columns: number;
-        currentColumn: number;
-        widths: string[];
-        currentColumnReference: null | HTMLElement;
-    }>>
-    createTable: (rows: number, columns: number) => void
-    addImage: ({ imageUrl, passedRange }: {
-        imageUrl: string;
-        passedRange?: Range | null | undefined;
-    }) => void
-    listenToSelectionChanges: () => void
-    restoreSelection: () => void
-}   
-
-const EditorContext = createContext({} as EditorContextProps)
-const EditorUpdate = createContext({} as EditorUpdateProps)
-
-
-export function useEditor(){
-    return useContext(EditorContext)
-}
-
-export function useEditorUpdate(){
-    return useContext(EditorUpdate)
-}
 
 
 const Editor = ({children, originalDocument, storedInDatabase}:{children: any, originalDocument: TextDocument, storedInDatabase: boolean}) => {
-    const [currentPage, setCurrentPage] = useState(1)
-    const [title, setTitle] = useState("undefined")
-    const [spellCheck, setSpellCheck] = useState(true)
-    const [scale, setScale] = useState("100%")
-    const [fontSize, setFontSize] = useState("16")
-    const [textBolded, setTextBolded] = useState(false)
-    const [textItalic, setTextItalic] = useState(false)
-    const [textUnderScore, setTextUnderScore] = useState(false)
-    const [color, setColor] = useState("rgb(12, 13, 14)")
-    const [comment, setComment] = useState(false)
-    const [backgroundColor, setBackgroundColor] = useState("rgb(255,255, 255)")
-    const [font, setFont] = useState("Open Sans")
-    const [link, setLink] = useState("")
-    const [convertedMarkdown, setConvertedMarkdown] = useState('');
-    const markdownInput = useRef<HTMLDivElement>(null);
-    const textDocument = useHistorySaver(originalDocument.text)
-    const [offsetForRuler, setOffsetForRuler] = useState(120)
+    const { state, update } = useEditorState(originalDocument.title, originalDocument.text);
+    
+    const {
+    spellCheck, scale, fontSize, textBolded, textItalic, textUnderScore, color, comment, backgroundColor,
+    font, link, convertedMarkdown, offsetForRuler, markdownInput, align, numberedList, bulletedList,
+    marginLeft, marginRight, showRuler, paddingBottom, paddingTop, currentPage, title, columnLayoutOnSelectedPage
+    } = state;
+
+  const {
+    setSpellCheck, setScale, setFontSize, setTextBolded, setTextItalic, setTextUnderScore, setColor, setComment,
+    setBackgroundColor, setFont, setLink, setConvertedMarkdown, setOffsetForRuler, setAlign, setShowRuler,
+    setMarginLeft, setMarginRight, setPaddingBottom, setPaddingTop, setCurrentPage, setTitle, setColumnLayoutOnSelectedPage,
+    setBulletedList, setNumberedList
+  } = update;
+
     const {savedSelection, restoreSelection} = useSelection(markdownInput)
-    const [align, setAlign] = useState(ALIGN_TYPES.None)
-    const [numberedList, setNumberedList] = useState(false)
-    const [bulletedList, setBulletedList] = useState(false)
-    const [marginLeft, setMarginLeft] = useState("0")
-    const [marginRight, setMarginRight] = useState("0")
-    const [showRuler, setShowRuler] = useState(true)
-    const [paddingBottom, setPaddingBottom] = useState(0)
-    const [paddingTop, setPaddingTop] = useState(0)
-    const [documentLoaded, setDocumentLoaded] = useState(true)
-    const userUpdate = useUserUpdate()
-
-    const onSave = useCallback(() => {
-        userUpdate.saveDocument(textDocument.value, originalDocument._id, storedInDatabase);
-      },[textDocument.value,originalDocument._id, storedInDatabase])
-
-    const debouncedText = useDebounce(textDocument.value, 1000, onSave);
-
-    const updateTitle = (title: string) => {
-        setTitle(title)
-        userUpdate.changeTitle(originalDocument._id, title, storedInDatabase)
-    }
+    const textDocument = useHistorySaver(originalDocument.text)
     
-    useEffect(() => {
-        userUpdate.saveDocument(debouncedText, originalDocument._id, storedInDatabase)
-    }, [debouncedText]);
+     const {setDocumentLoaded, documentLoaded} = useDocumentLoader({
+        markdownInput
+    });
+    const { updateTitle } = useHandleDocument({
+        originalDocument,
+        textDocument,
+        storedInDatabase,
+        setTitle,
+        setDocumentLoaded,
+    });
 
-    
+  
 
-    useEffect(() => {
-        setTitle(originalDocument.title)
-        textDocument.reset(originalDocument.text)
-        document.title = originalDocument.title;
-        setDocumentLoaded(false)
-    }, [originalDocument._id]);
 
-    useEffect(() => {
-       if(documentLoaded===true){
-            return
-       }
-        
-        markdownInput.current?.focus()
-        // Set any attributes or properties for the element
-        const newElement = document.createElement('input');
-        newElement.id = 'myElement';
-        newElement.type = 'text';
-
-        // Apply CSS styles to make the element invisible
-        newElement.style.position = 'absolute';
-        newElement.style.top = '-9999px';
-        newElement.style.left = '-9999px';
-
-        // Append the element to the desired parent element in the DOM
-        const parentElement = document.getElementById('root');
-        parentElement!.appendChild(newElement);
-
-        // Focus on the newly created element
-        newElement.focus();
-        markdownInput.current?.focus()
-       setDocumentLoaded(false)
-        
-    }, [documentLoaded]);
-
-    const [columnLayoutOnSelectedPage, setColumnLayoutOnSelectedPage] = useState<{columns: number, currentColumn: number, widths: string[], currentColumnReference: null|HTMLElement}>
-    ({
-        columns: 1, 
-        currentColumn: 1, 
-        currentColumnReference: null,
-        widths: ["593mm"]
-    })
  
     const updateParagraphs = ({property, propertyValue, callback, passedRange=null}:
         {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useComponentVisible from "../../../customhooks/useComponentVisiblity";
 import "./OptionLists.css";
-import { useEditor, useEditorUpdate } from "../../Editor";
+import { useEditor, useEditorUpdate } from "../../..//contexts/UseEditorProvider";
 import "./FormatPicker.css";
 
 type option = {

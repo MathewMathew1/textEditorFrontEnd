@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useEffect, useRef } from "react";
-import { useEditor } from "../components/Editor";
+import { useEditor } from "./UseEditorProvider";
 import { getNodesInRange, isBrBetweenTextNodes } from "../Utilities/editors";
 import { clamp } from "../Utilities/colors";
 

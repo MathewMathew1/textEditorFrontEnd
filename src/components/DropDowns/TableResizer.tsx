@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { cellResizeInfoType } from '../../types';
 import "./TableResizer.css";
 import { clamp } from '../../Utilities/colors';
-import { useEditor } from '../Editor';
+import { useEditor } from '../../contexts/UseEditorProvider';
 
 const MINIMAL_WIDTH = 20
 const MINIMAL_HEIGHT = 16

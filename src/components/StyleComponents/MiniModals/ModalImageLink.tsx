@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import "./Modal.css";
-import { useEditor, useEditorUpdate } from "../../Editor";
+import { useEditor, useEditorUpdate } from "../../../contexts/UseEditorProvider";
 
 const ModalImageLink = ({isModalOpen, setIsModalOpen, innerRef}: {
         setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, 

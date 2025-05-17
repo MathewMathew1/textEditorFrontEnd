@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ImageResizeInfo } from '../../types';
 import { clamp } from '../../Utilities/colors';
-import { useEditor } from '../Editor';
+import { useEditor } from '../../contexts/UseEditorProvider';
 import "./ImageResizer.css";
 
 const MINIMAL_IMAGE_WIDTH = 40

@@ -1,7 +1,7 @@
 import { clamp } from "../Utilities/colors";
 import useComponentVisible from "../customhooks/useComponentVisiblity";
-import { GoBack, GoForward, Print, SpellCheck, Link, Comment, Image, JustifyLeft, JustifyCenter, JustifyRight, Justify, Spacing, ListControlled, ListPoints, ListNumbered, SmallerIndentation, BiggerIndentation, ClearFormatting } from "../svgs/svgs"; 
-import { useEditor, useEditorUpdate } from "./Editor";
+import { GoBack, GoForward, Print, SpellCheck, Link, Image, JustifyLeft, JustifyCenter, JustifyRight, Justify, ListPoints, ListNumbered, SmallerIndentation, BiggerIndentation, ClearFormatting } from "../svgs/svgs"; 
+import { useEditor, useEditorUpdate } from "../contexts/UseEditorProvider";
 import LinkModal from "./StyleComponents/MiniModals/ModalLink";
 import FontPicker from "./StyleComponents/OptionsLists/FontPicker";
 import FormatPicker from "./StyleComponents/OptionsLists/FormatPicker";

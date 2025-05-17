@@ -1,6 +1,6 @@
 import "./ParapgraghSelectList.css";
 import "./OptionLists.css";
-import { useEditorUpdate } from "../../Editor";
+import { useEditorUpdate } from "../../../contexts/UseEditorProvider"
 
 const ParagraphLineSpacingDropdown= ({setIsModalOpen, setIsComponentVisible}
     :{setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, setIsComponentVisible?: React.Dispatch<React.SetStateAction<boolean>>}) => {

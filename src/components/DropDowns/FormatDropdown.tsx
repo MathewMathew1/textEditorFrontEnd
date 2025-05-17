@@ -1,6 +1,6 @@
 import { BiggerIndentation, Bold, ClearFormatting, Column3, Columns, Italic, Justify, JustifyCenter, JustifyLeft, JustifyRight, ListControlled, ListNumbered, ListPoints, SmallerIndentation, Spacing, Strikethrough, Subscript, Superscript, Underline } from "../../svgs/svgs";
 
-import { useEditor, useEditorUpdate } from "../Editor";
+import { useEditor, useEditorUpdate } from "../../contexts/UseEditorProvider";
 import useComponentVisible from "../../customhooks/useComponentVisiblity";
 import { clamp } from "../../Utilities/colors";
 import { useCallback, useEffect } from "react";

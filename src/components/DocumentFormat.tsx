@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import { getParentNodeWithTag, splitNodes, createRangeFromNodeAndRange, getFurthestParentNodeContainingOnlyText, deleteNode, createElementInRange, isNestedFirstChild, findColumnParent } from "../Utilities/editors";
 import RulerHorizontal from "./StyleComponents/Rulers/RulerHorizontal";
 import RulerVertical from "./StyleComponents/Rulers/RulerVertical";
-import { useEditor, useEditorUpdate } from "./Editor";
+import { useEditor, useEditorUpdate }  from "../contexts/UseEditorProvider"
 import ImageResizer from "./DropDowns/ImageResizer";
 import { ImageResizeInfo, cellResizeInfoType } from "../types";
 import { areNodesEqual, normalParagraph } from "../Utilities/document";

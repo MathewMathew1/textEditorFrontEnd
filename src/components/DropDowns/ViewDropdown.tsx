@@ -1,5 +1,5 @@
 import { Check } from "../../svgs/svgs";
-import { useEditor, useEditorUpdate } from "../Editor";
+import { useEditor, useEditorUpdate } from "../../contexts/UseEditorProvider"
 import useComponentVisible from "../../customhooks/useComponentVisiblity";
 import { useBackdrop, useBackdropUpdate } from "../../contexts/BackdropContext";
 

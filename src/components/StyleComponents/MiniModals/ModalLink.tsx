@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import "./Modal.css";
-import { useEditor, useEditorUpdate } from "../../Editor";
+import { useEditor, useEditorUpdate } from  "../../../contexts/UseEditorProvider";
 import { createLinkFromString } from "../../../Utilities/editors";
 
 const LinkModal= ({isModalOpen, setIsModalOpen, innerRef}: {

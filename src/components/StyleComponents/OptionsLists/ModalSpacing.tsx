@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./ModalSpacing.css";
 import "./OptionLists.css";
-import { useEditor, useEditorUpdate } from "../../Editor";
+import { useEditor, useEditorUpdate } from "../../../contexts/UseEditorProvider";
 
 const ModalSpacing = ({isModalOpen, setIsModalOpen, innerRef}: {
         setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, 
