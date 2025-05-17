@@ -1,6 +1,6 @@
 
 import "./Editor.css";
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import {
     SelectionRestorerFromText, getParentNodeWithTag, deleteNode, getNodesInRange, changeTag, getRangeBetweenElements,
     createElementInRange, styleSpans, checkIfAllElementsHaveSameValue, hasAncestorSpan, getInnerRange, splitNodes, getCommonValueForElements, getTextOutsideRange, findColumnParent, getFurthestDeletableNode, isNestedFirstChild, groupElementsByParent, splitNodesInRange
@@ -9,12 +9,11 @@ import "./Editor.css";
 import useHistorySaver from "../customhooks/useHistorySaver";
 import useSelection from "../customhooks/useSelection";
 import { TextDocument } from "../types";
-import { useUserUpdate } from "../contexts/UserContext";
-import useDebounce from "../customhooks/useDebounce";
 import { EditorContext, EditorUpdate } from "../contexts/UseEditorProvider";
-import useEditorState from "../contexts/useEditorState";
-import useHandleDocument from "../contexts/useHandleDocument";
+import useEditorState from "../customhooks/useEditorState";
+import useHandleDocument from "../customhooks/useHandleDocument";
 import useDocumentLoader from "../contexts/useDocumentLoader";
+import { useHandleStyling } from "../customhooks/useHandlingStyle";
 
 const OPPOSITE_VALUES = {
     fontWeight: "normal",
@@ -71,7 +70,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
     });
 
   
-
+    const {addStylingToSpan} = useHandleStyling(markdownInput, textDocument)
 
  
     const updateParagraphs = ({property, propertyValue, callback, passedRange=null}:
@@ -101,67 +100,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
         textDocument.saveValue(markdownInput.current!.innerHTML, true, true);
     }
 
-    const addStylingToSpan = ({styleProperty, styleValue, haveOppositeValue = false, callbackFunction, passedRange=null}:
-        {
-            styleProperty: string, 
-            styleValue: string, 
-            haveOppositeValue?: boolean, 
-            passedRange?: Range|null
-            callbackFunction?: (element: HTMLElement, styleProperty: string, styleValue: string, sameValue: boolean) => void|undefined
-        }) => {
-        let selection = window.getSelection()
-        if(selection===null) return
-
-        if(markdownInput.current===null) return
-        
-        const range =  passedRange? passedRange: selection.getRangeAt(0)
-        const rangeIsCollapsed = range.collapsed
-
-        const rangeToRestore = new SelectionRestorerFromText()
-        const parentNodeOfStart = getParentNodeWithTag(range.startContainer, ["p", "li"])
-        const endNodeOfStart = getParentNodeWithTag(range.endContainer, ["p", "li"])
-        if(parentNodeOfStart !==null && endNodeOfStart !== null){
-            rangeToRestore.saveRange(range, parentNodeOfStart, endNodeOfStart)
-        }
-
-        const allSpansAndTextsInsideSelection = getNodesInRange(range, ["SPAN", "#text"], markdownInput.current!)
-     
-        const allSpansInsideSelection = allSpansAndTextsInsideSelection.filter((node)=>{
-            return node.nodeName==="SPAN" && (node as HTMLElement).className !== "page" && (node as HTMLElement).className !== "column"
-        })
-        const allTextsNotSurroundedWithSpan = allSpansAndTextsInsideSelection.filter((node)=>{
-            return node.nodeName==="#text" && !hasAncestorSpan(node)
-        })
-
-        if(!haveOppositeValue){
-            styleSpans({range, styleProperty, styleValue, allSpansInsideSelection, allowCollapsedRange: rangeIsCollapsed, callbackFunction, sameValues: false })
-        }else{
-            const allSameValues = checkIfAllElementsHaveSameValue(range, styleProperty, styleValue, allSpansInsideSelection, rangeIsCollapsed )
-            styleValue = allSameValues? OPPOSITE_VALUES[styleProperty as keyof typeof OPPOSITE_VALUES] : styleValue
-            styleSpans({range, styleProperty, styleValue, allSpansInsideSelection, sameValues: allSameValues, allowCollapsedRange: rangeIsCollapsed, callbackFunction,  })
-        }
-
-        allTextsNotSurroundedWithSpan.forEach(textNode => {
-            const span = document.createElement('span');
-            textNode.parentNode!.insertBefore(span, textNode);
-            const rangeWithinText = getInnerRange(textNode, range)
-            if(!rangeIsCollapsed && rangeWithinText.collapsed){
-                return
-            }
-            rangeWithinText.surroundContents(span);
-            if(callbackFunction){
-                callbackFunction(span, styleProperty, styleValue, false)
-            }else{
-                span.style[styleProperty as any] = styleValue
-            }
-        })
-        
-        
-        if(!rangeIsCollapsed ){
-            rangeToRestore.restoreRange(selection)
-        }
-        textDocument.saveValue(markdownInput.current?.innerHTML, true, true);
-    }
+   
 
     const addList = (listType: string) => {
         const selection = window.getSelection();
@@ -281,10 +220,8 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
     const listenToSelectionChanges = useCallback( () => {
         const selection = window.getSelection();
      
-        //if(isSelectionBeforeTable()) return
 
         if (!selection || !markdownInput.current?.contains(selection.anchorNode)) return
-        // updating current values based on selection
 
         let range = selection.getRangeAt(0)
         const rangeIsCollapsed = range.collapsed

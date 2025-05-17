@@ -1,4 +1,3 @@
-// src/customhooks/useEditorState.ts
 import { useRef, useState } from "react";
 
 export default function useEditorState(originalTitle: string, defaultText: string) {

@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from "react";
 
-import { useUserUpdate } from "./UserContext";
-import useDebounce from "../customhooks/useDebounce";
+import { useUserUpdate } from "../contexts/UserContext";
+import useDebounce from "./useDebounce";
 
-// --- Types you might already have ---
 interface DocumentData {
   _id: string;
   title: string;
