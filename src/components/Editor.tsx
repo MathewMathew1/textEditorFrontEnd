@@ -15,6 +15,7 @@ import useHandleDocument from "../customhooks/useHandleDocument";
 import useDocumentLoader from "../contexts/useDocumentLoader";
 import { useHandleStyling } from "../customhooks/useHandlingStyle";
 import { useHandleSelectionChanges } from "../customhooks/useHandleSelectionChanges";
+import { useEditorCommands } from "../customhooks/useEditorCommands";
 
 
 export const ALIGN_TYPES = {
@@ -57,6 +58,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
      const {setDocumentLoaded, documentLoaded} = useDocumentLoader({
         markdownInput
     });
+
     const { updateTitle } = useHandleDocument({
         originalDocument,
         textDocument,
@@ -65,9 +67,9 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
         setDocumentLoaded,
     });
 
-  
     const {addStylingToSpan} = useHandleStyling(markdownInput, textDocument)
     const listenToSelectionChanges = useHandleSelectionChanges({markdownInput, setters: update})
+    const {addList} = useEditorCommands(state, update, textDocument)
 
  
     const updateParagraphs = ({property, propertyValue, callback, passedRange=null}:
@@ -99,140 +101,9 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
 
    
 
-    const addList = (listType: string) => {
-        const selection = window.getSelection();
-        if (!selection) return;
-        
-        let range = selection.getRangeAt(0)
-    
-        const rangeToRestore = new SelectionRestorerFromText()
-        const parentNodeOfStart = range.startContainer
-        const parentNodeOfEnd = range.endContainer
-        const endOffset = range.endOffset
-        const startOffset = range.startOffset
-        const spans = getNodesInRange(range, ["SPAN"], markdownInput.current!)
-        const pageSpan = spans.find((node)=>(node as HTMLElement).className==="page") 
-        const columnInfo = getStatusAboutCurrentColumns(pageSpan!, range)
-        
-        if(parentNodeOfStart && parentNodeOfEnd) rangeToRestore.saveRange(range, parentNodeOfStart, parentNodeOfEnd)
-
-        const parentList = getParentNodeWithTag(range.commonAncestorContainer, ["ul", "ol"])
-        if(columnInfo.currentColumnReference && !columnInfo.currentColumnReference?.contains(parentList)) parentList === null // if list in different column ignore it
-
-        if(parentList?.textContent == range.toString()){
-  
-            if(listType.toUpperCase() != parentList.nodeName){
-                changeTag(parentList, listType)
-                range.setStart(parentNodeOfStart,startOffset)
-                range.setEnd(parentNodeOfEnd, endOffset)
-                return
-            }
-
-            const listRange = new Range();
-            listRange.setStartBefore(parentList);
-            listRange.setEndAfter(parentList);
-
-            const listObject = getNodesInRange(range ,["LI"], markdownInput.current!).filter((node)=>
-                columnInfo.currentColumnReference?.contains(node) || !columnInfo.currentColumnReference)
-            listObject.forEach((object)=>{
-                changeTag(object, "p")
-            })
-            deleteNode(parentList)
-    
-            range.setStart(parentNodeOfStart,startOffset)
-            range.setEnd(parentNodeOfEnd, endOffset)
-            textDocument.saveValue(markdownInput.current!.innerHTML, true, true)
-            return
-        }
-        
-        if(parentList){
-            const listElements = getNodesInRange(range ,["LI"], markdownInput.current!).filter((node)=>
-                columnInfo.currentColumnReference?.contains(node) || !columnInfo.currentColumnReference
-            )
-      
-            const listRange = new Range();
-            listRange.setStart(parentList, 0);
-            listRange.setEndBefore(listElements[0]);
-            if(!listRange.collapsed) createElementInRange(parentList.nodeName, listRange)
-                    
-            const rangeTillTheEndOfList = new Range();
-            rangeTillTheEndOfList.setStartAfter(listElements[listElements.length-1]);
-            rangeTillTheEndOfList.setEnd(parentList, parentList.childNodes.length);
-            if(!rangeTillTheEndOfList.collapsed) createElementInRange(parentList.nodeName, rangeTillTheEndOfList)
-
-            const rangeForNewList = new Range();
-            rangeForNewList.setStartBefore(listElements[0]);
-            rangeForNewList.setEndAfter(listElements[listElements.length-1])
-            if(listType.toUpperCase() != parentList.nodeName){
-                
-                createElementInRange(listType, rangeForNewList)
-                deleteNode(parentList)
-                range.setStart(parentNodeOfStart,startOffset)
-                range.setEnd(parentNodeOfEnd, endOffset)
-                textDocument.saveValue(markdownInput.current!.innerHTML, true, true)
-                return
-            }
-            
-            const elementsToChange = getNodesInRange(range ,["LI"], markdownInput.current!).filter((node)=>
-                columnInfo.currentColumnReference?.contains(node) || !columnInfo.currentColumnReference
-            )
-            elementsToChange.forEach((elementToChange)=> {
-                changeTag(elementToChange, "p")
-            })
-            
-            deleteNode(parentList)
-            
-            range.setStart(parentNodeOfStart,startOffset)
-            range.setEnd(parentNodeOfEnd, endOffset)
-            textDocument.saveValue(markdownInput.current!.innerHTML, true, true)
-            return         
-        }
-        
-        const paragraphs = getNodesInRange(range ,["P", "LI"], markdownInput.current!).filter((node)=>{
-            return columnInfo.currentColumnReference?.contains(node) || !columnInfo.currentColumnReference
-        })
-        let wholeRangeInList = getRangeBetweenElements(paragraphs[0], paragraphs[paragraphs.length-1])
-
-        const listsInside = getNodesInRange(wholeRangeInList ,["OL", "UL"], markdownInput.current!).filter((node)=>
-            columnInfo.currentColumnReference?.contains(node) || !columnInfo.currentColumnReference
-        ) 
-        listsInside.forEach((list)=>{
-            deleteNode(list)
-        })
-        // range get messed up after deleting lists inside
-        wholeRangeInList = getRangeBetweenElements(paragraphs[0], paragraphs[paragraphs.length-1])
-        
-        const listElement = document.createElement(listType);
-        wholeRangeInList.surroundContents(listElement)
-        paragraphs.forEach((paragraph)=> {
-            if(paragraph.nodeName==="li") return
-            changeTag(paragraph, "li")
-        })
-        
-        range.setStart(parentNodeOfStart,startOffset)
-        range.setEnd(parentNodeOfEnd, endOffset)
-        textDocument.saveValue(markdownInput.current!.innerHTML, true, true)
-    }
 
     
-    const getStatusAboutCurrentColumns = (pageSpan: Node, range: Range) => {
-        const gridColumnValue = window.getComputedStyle((pageSpan as HTMLElement)).gridTemplateColumns;
-        const gridColumnArray = gridColumnValue.split(' ');
-        let currentColumn: null|HTMLElement = null
-        let inWhichColumnSelectionLies = 1
 
-        for(let i=0; i<pageSpan.childNodes.length; i++){
-            if(range.intersectsNode(pageSpan.childNodes[i]) && (pageSpan.childNodes[i] as HTMLElement).className==="column"){
-                inWhichColumnSelectionLies = i + 1
-                currentColumn = pageSpan.childNodes[i] as HTMLElement
-                break
-            }
-        }
-
-        return{columns: gridColumnArray.length, 
-            currentColumn: inWhichColumnSelectionLies,
-            widths: gridColumnArray, currentColumnReference: currentColumn }     
-    }
 
     const addImage = ({imageUrl, passedRange}:{imageUrl: string, passedRange?: Range|null}) => {
         let selection = window.getSelection()

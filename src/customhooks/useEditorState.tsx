@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
+import type { EditorState, EditorUpdate } from "../types/editor";
 
-export default function useEditorState(originalTitle: string, defaultText: string) {
+export default function useEditorState(originalTitle: string): {
+  state: EditorState;
+  update: EditorUpdate;
+} {
   const [spellCheck, setSpellCheck] = useState(true);
   const [scale, setScale] = useState("100%");
   const [fontSize, setFontSize] = useState("16");
