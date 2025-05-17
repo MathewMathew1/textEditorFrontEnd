@@ -16,6 +16,7 @@ import useDocumentLoader from "../contexts/useDocumentLoader";
 import { useHandleStyling } from "../customhooks/useHandlingStyle";
 import { useHandleSelectionChanges } from "../customhooks/useHandleSelectionChanges";
 import { useEditorCommands } from "../customhooks/useEditorCommands";
+import { useEditorUpdateActions } from "../customhooks/useEditorUpdateActions";
 
 
 export const ALIGN_TYPES = {
@@ -71,49 +72,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
     const listenToSelectionChanges = useHandleSelectionChanges({markdownInput, setters: update})
     const {addList, addImage, addLink, createTable} = useEditorCommands(state, textDocument, savedSelection)
 
- 
-    const updateParagraphs = ({property, propertyValue, callback, passedRange=null}:
-        {
-            property: string, 
-            propertyValue: 
-            string, callback?: (paragraph: HTMLElement, value: string) => void,
-            passedRange?: Range|null
-        }) => {
-      
-        const selection = window.getSelection();
-        
-        if (!selection && !passedRange)  return;
-        
-        let range = passedRange? passedRange: selection!.getRangeAt(0);
-        const paragraphs = getNodesInRange(range ,["P", "LI", "TABLE"], markdownInput.current!)
-        paragraphs.forEach((paragraph: Node) => {
-            const htmlElement = paragraph as HTMLElement;
-            if (callback) {
-                callback(htmlElement, propertyValue);
-                return
-            }
-            
-            htmlElement.style[property as any] = propertyValue
-            
-        })
-        textDocument.saveValue(markdownInput.current!.innerHTML, true, true);
-    }
-
-    const updatePageSpan = ({passedRange, callback}:{
-        passedRange?: Range|null, 
-        callback: (element: HTMLElement) => void
-    }) => {
-        let selection = window.getSelection()
-        if(selection===null) return
-
-        if(markdownInput.current===null) return
-        
-        let range =  passedRange? passedRange: selection.getRangeAt(0)
-        const allSpans = getNodesInRange(range, ["SPAN", "#text"], markdownInput.current!)
-        const page = allSpans.find((span)=>(span as HTMLElement).className==="page") as HTMLElement
-        callback(page)
-        textDocument.saveValue(markdownInput.current!.innerHTML, true, true)
-    }
+    const { updateParagraphs, updatePageSpan } = useEditorUpdateActions(markdownInput, textDocument);
 
     const deleteSelection = () => {
         const selection = window.getSelection();
