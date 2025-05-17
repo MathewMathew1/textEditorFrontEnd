@@ -3,7 +3,7 @@ import "./Editor.css";
 import { useCallback } from "react";
 import {
     SelectionRestorerFromText, getParentNodeWithTag, deleteNode, getNodesInRange, changeTag, getRangeBetweenElements,
-    createElementInRange, styleSpans, checkIfAllElementsHaveSameValue, hasAncestorSpan, getInnerRange, splitNodes, getCommonValueForElements, getTextOutsideRange, findColumnParent, getFurthestDeletableNode, isNestedFirstChild, groupElementsByParent, splitNodesInRange
+    createElementInRange, checkIfAllElementsHaveSameValue,  splitNodes, getCommonValueForElements, getTextOutsideRange, findColumnParent, getFurthestDeletableNode, isNestedFirstChild, groupElementsByParent, splitNodesInRange
 } from "../Utilities/editors";
 import "./Editor.css";
 import useHistorySaver from "../customhooks/useHistorySaver";
@@ -14,12 +14,8 @@ import useEditorState from "../customhooks/useEditorState";
 import useHandleDocument from "../customhooks/useHandleDocument";
 import useDocumentLoader from "../contexts/useDocumentLoader";
 import { useHandleStyling } from "../customhooks/useHandlingStyle";
+import { useHandleSelectionChanges } from "../customhooks/useHandleSelectionChanges";
 
-const OPPOSITE_VALUES = {
-    fontWeight: "normal",
-    textDecoration: "none",
-    fontStyle: "normal"
-}
 
 export const ALIGN_TYPES = {
     Center: "center",
@@ -40,7 +36,7 @@ const DEFAULT_VALUES = {
 
 
 const Editor = ({children, originalDocument, storedInDatabase}:{children: any, originalDocument: TextDocument, storedInDatabase: boolean}) => {
-    const { state, update } = useEditorState(originalDocument.title, originalDocument.text);
+    const { state, update } = useEditorState(originalDocument.title);
     
     const {
     spellCheck, scale, fontSize, textBolded, textItalic, textUnderScore, color, comment, backgroundColor,
@@ -71,6 +67,7 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
 
   
     const {addStylingToSpan} = useHandleStyling(markdownInput, textDocument)
+    const listenToSelectionChanges = useHandleSelectionChanges({markdownInput, setters: update})
 
  
     const updateParagraphs = ({property, propertyValue, callback, passedRange=null}:
@@ -217,96 +214,6 @@ const Editor = ({children, originalDocument, storedInDatabase}:{children: any, o
         textDocument.saveValue(markdownInput.current!.innerHTML, true, true)
     }
 
-    const listenToSelectionChanges = useCallback( () => {
-        const selection = window.getSelection();
-     
-
-        if (!selection || !markdownInput.current?.contains(selection.anchorNode)) return
-
-        let range = selection.getRangeAt(0)
-        const rangeIsCollapsed = range.collapsed
-
-        const allNodes = getNodesInRange(range, ["SPAN", "P", "LI", "OL", "UL", "A", "TABLE"], markdownInput.current!)
-        const spans = allNodes.filter(node=>node.nodeName==="SPAN" && (node as HTMLElement).className!=="page" && (node as HTMLElement).className!=="column")
-        
-        const paragraphs = allNodes.filter(node=>node.nodeName==="P" || node.nodeName==="LI" || node.nodeName==="TABLE")
-        const numberedLists = allNodes.filter(node=>node.nodeName==="OL")
-        const bulletedLists = allNodes.filter(node=>node.nodeName==="UL")
-        const links = allNodes.filter(node=>node.nodeName==="A")
-
-        setTextBolded(checkIfAllElementsHaveSameValue(range, "fontWeight", "bold", spans, rangeIsCollapsed ))
-        setTextItalic(checkIfAllElementsHaveSameValue(range, "fontStyle", "italic", spans, rangeIsCollapsed ))
-        setTextUnderScore(checkIfAllElementsHaveSameValue(range, "textDecoration", "underline", spans, rangeIsCollapsed ))
-        
-        const align = getCommonValueForElements(range, "textAlign", paragraphs, rangeIsCollapsed)
-        setAlign(align? align: ALIGN_TYPES.None)
-        
-        const color = getCommonValueForElements(range, "color", spans, rangeIsCollapsed)
-        setColor(color? color: DEFAULT_VALUES.Color)
-        
-        const backgroundColor = getCommonValueForElements(range, "backgroundColor", spans, rangeIsCollapsed)
-        setBackgroundColor(backgroundColor? backgroundColor: DEFAULT_VALUES.BackgroundColor)
-        
-        const fontSize = getCommonValueForElements(range, "fontSize", spans, rangeIsCollapsed)
-        setFontSize(fontSize? parseInt(fontSize).toString(): DEFAULT_VALUES.FontSize)
-        
-        const font = getCommonValueForElements(range, "fontFamily", spans, rangeIsCollapsed)
-        const fontFormatted = font? font.replace(/"/g, ''): DEFAULT_VALUES.Font; // removing quotes that exist if font family have spaces
-        setFont(fontFormatted)
-        
-        const isSelectionInsideNumberedList = numberedLists.some((list)=>{
-            const selectionIsInsideList = (list===range.startContainer) || list.contains(range.startContainer) && list.contains(range.endContainer)
-            return selectionIsInsideList
-        }) 
-        setNumberedList(isSelectionInsideNumberedList)
- 
-        const isSelectionInsideBulletedList = bulletedLists.some((list)=>{
-            const selectionIsInsideList = (list===range.startContainer) || list.contains(range.startContainer) && list.contains(range.endContainer)
-            return selectionIsInsideList
-        }) 
-        setBulletedList(isSelectionInsideBulletedList)
-        if(paragraphs[0]){
-            const element = paragraphs[0] as HTMLElement;
-            const computedStyle = window.getComputedStyle(element);
-
-            const marginLeft = computedStyle.marginLeft;
-            const marginLeftValue = parseInt(marginLeft);
-            const marginLeftConverted = isNaN(marginLeftValue) ? '0' : marginLeftValue + 'px';
-            setMarginLeft(marginLeftConverted);
-
-            const marginRight = computedStyle.marginRight;
-            const marginRightValue = parseInt(marginRight);
-            const marginRightConverted = isNaN(marginRightValue) ? '0' : marginRightValue + 'px';
-            setMarginRight(marginRightConverted);
-        }
-
-        const allPages = Array.from(markdownInput.current.querySelectorAll('span.page'))
-
-        const pageSpan = allPages.find((node)=>selection.containsNode(node, true)) 
-
-        const currentPage = allPages.findIndex((page)=>page===pageSpan)
-        
-        if(pageSpan){
-            const computedStylePage = window.getComputedStyle(pageSpan)
-            const paddingBottom = computedStylePage.paddingBottom;
-            const paddingBottomConverted = parseFloat(paddingBottom);
-            setPaddingBottom(paddingBottomConverted);
-
-            const paddingTop = computedStylePage.paddingTop;
-            const paddingTopConverted = parseFloat(paddingTop);
-            setPaddingTop(paddingTopConverted);
-        }
-        
-        setCurrentPage(currentPage+1)
-
-        if(pageSpan){
-            setColumnLayoutOnSelectedPage(getStatusAboutCurrentColumns(pageSpan, range))
-        }
-        
-        const linkHref = links[0]? (links[0] as HTMLAnchorElement).href: ""
-        setLink(linkHref)
-
-    }, [markdownInput.current])
     
     const getStatusAboutCurrentColumns = (pageSpan: Node, range: Range) => {
         const gridColumnValue = window.getComputedStyle((pageSpan as HTMLElement)).gridTemplateColumns;
