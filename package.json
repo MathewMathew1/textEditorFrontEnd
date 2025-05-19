@@ -11,7 +11,8 @@
   "dependencies": {
     "@types/jszip": "^3.4.1",
     "@types/react-router-dom": "5.3.3",
-    "jspdf": "^2.5.1",
+    "html2pdf.js": "^0.10.3",
+    "jspdf": "^3.0.1",
     "jszip": "^3.10.1",
     "react": "^18.2.0",
     "react-contenteditable": "^3.3.6",
@@ -19,6 +20,7 @@
     "react-router-dom": "6.4.4"
   },
   "devDependencies": {
+    "@types/html-docx-js": "^0.3.4",
     "@types/js-cookie": "^3.0.3",
     "@types/pdfkit": "^0.12.8",
     "@types/rangy": "^0.0.34",
@@ -26,6 +28,6 @@
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^6.3.5"
   }
 }

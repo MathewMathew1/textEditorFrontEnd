@@ -20,8 +20,8 @@ export default function useDocumentLoader({
     newElement.id = "myElement";
     newElement.type = "text";
     newElement.style.position = "absolute";
-    newElement.style.top = "-9999px";
-    newElement.style.left = "-9999px";
+    newElement.style.top = "-9999pt";
+    newElement.style.left = "-9999pt";
 
     const parentElement = document.getElementById("root");
     if (parentElement) {

@@ -77,6 +77,7 @@ const TextDocumentComponent = () => {
         }
     }, [user.fetchingUserDataFinished, params.id]);
 
+
     return (          
         <>
         {finishLoading?

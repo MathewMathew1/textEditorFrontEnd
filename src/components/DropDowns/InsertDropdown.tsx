@@ -76,12 +76,7 @@ const InsertDropdown = () => {
                         </div>
                     </div>
                     <hr ></hr>
-                 
-                    <button  className="button-div dropdown-option">
-                        <div><Image /></div>
-                        <div className="text-option-dropdown">Print</div>
-                        <div >Ctrl+P</div>
-                    </button>
+
                     <div className="sidebar">
                         <button className="button-div dropdown-option ">
                             <div><Image /></div>

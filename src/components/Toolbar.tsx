@@ -10,6 +10,7 @@ import ColorPicker from "./StyleComponents/Selector/ColorPicker";
 import { Tooltip } from "./Tootltip";
 import { ALIGN_TYPES } from "./Editor";
 import { htmlDocument } from "../Utilities/html";
+import { pxToMm, pxToPt } from "../Utilities/converters";
 
 const FONT_SIZE_BOUNDARY = {
     MIN: 1,
@@ -28,9 +29,9 @@ const Toolbar = () => {
     const editorUpdate = useEditorUpdate()
 
     const changeTextIndent = (element: HTMLElement, value: string) => {
-        let currentIndent = parseFloat(getComputedStyle(element).textIndent)
+        let currentIndent = pxToMm(parseFloat(getComputedStyle(element).textIndent))
         let newIndent = clamp(currentIndent + parseInt(value), 0, 700) 
-        element.style.textIndent = `${newIndent}px`
+        element.style.textIndent = `${newIndent}mm`
     }
 
     const toggleSpellCheck = (newValue: boolean) => {
@@ -76,7 +77,7 @@ const Toolbar = () => {
         }
 
         const newValue = clamp(baseValue + addedValue, FONT_SIZE_BOUNDARY.MIN, FONT_SIZE_BOUNDARY.MAX)
-        element.style.fontSize = `${newValue}px`
+        element.style.fontSize = `${newValue}pt`
     }   
 
     const changeBackgroundColor = (color: string) => {
@@ -267,13 +268,13 @@ const Toolbar = () => {
                         <Tooltip text="Numbered List"/>
                     </div>
                     <div className="tooltip">
-                        <button onClick={()=>editorUpdate.updateParagraphs({property: "textIndent", propertyValue: "-20;", callback: changeTextIndent})} className="button-div clickable padding0">
+                        <button onClick={()=>editorUpdate.updateParagraphs({property: "textIndent", propertyValue: "-10mm", callback: changeTextIndent})} className="button-div clickable padding0">
                             <SmallerIndentation/>
                         </button>
                         <Tooltip text="Decrease indent"/>
                     </div>
                     <div className="tooltip">
-                        <button  onClick={()=>editorUpdate.updateParagraphs({property: "textIndent", propertyValue: "20;", callback: changeTextIndent})} className="button-div clickable padding0">
+                        <button  onClick={()=>editorUpdate.updateParagraphs({property: "textIndent", propertyValue: "10mm", callback: changeTextIndent})} className="button-div clickable padding0">
                             <BiggerIndentation/>
                         </button>
                         <Tooltip text="Increase indent"/>

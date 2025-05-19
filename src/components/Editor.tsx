@@ -1,10 +1,3 @@
-
-import "./Editor.css";
-import { useCallback } from "react";
-import {
-    SelectionRestorerFromText, getParentNodeWithTag, deleteNode, getNodesInRange, changeTag, getRangeBetweenElements,
-    createElementInRange, checkIfAllElementsHaveSameValue,  splitNodes, getCommonValueForElements, getTextOutsideRange, findColumnParent, getFurthestDeletableNode, isNestedFirstChild, groupElementsByParent, splitNodesInRange
-} from "../Utilities/editors";
 import "./Editor.css";
 import useHistorySaver from "../customhooks/useHistorySaver";
 import useSelection from "../customhooks/useSelection";
@@ -19,7 +12,6 @@ import { useEditorCommands } from "../customhooks/useEditorCommands";
 import { useEditorUpdateActions } from "../customhooks/useEditorUpdateActions";
 import { useEditorDeleteActions } from "../customhooks/useDeleteSelection";
 
-
 export const ALIGN_TYPES = {
     Center: "center",
     Left: "left",
@@ -27,16 +19,6 @@ export const ALIGN_TYPES = {
     Justify: "justify",
     None: "none"
 }
-
-const DEFAULT_VALUES = {
-    Color: "rgb(0,0,0)",
-    BackgroundColor: "rgb(255,255,255)",
-    FontSize: "12",
-    Font: "Times New Roman"
-}
-
-
-
 
 const Editor = ({children, originalDocument, storedInDatabase}:{children: any, originalDocument: TextDocument, storedInDatabase: boolean}) => {
     const { state, update } = useEditorState(originalDocument.title);

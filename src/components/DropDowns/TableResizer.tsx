@@ -99,14 +99,14 @@ const TableResizer = ({ show, cellInfo}: Props): JSX.Element => {
     const indexInRow = Array.from(row!.childNodes).findIndex((child)=>child===cell)
     rowContainer.childNodes.forEach((row)=>{
       const nodeAsElement = row.childNodes[indexInRow] as HTMLElement
-      nodeAsElement.style.width = `${newWidth}px`
+      nodeAsElement.style.width = `${newWidth}pt`
 
       const cellTakenWidth = dragDirectionRef.current===DRAG_DIRECTION.LEFT? nodeAsElement.previousSibling: nodeAsElement.nextSibling
       if(newWidth>cellInfo.initialWidth && cellTakenWidth){
         const nextNode = cellTakenWidth  as HTMLElement
         const differenceInWidth = newWidth-cellInfo.initialWidth
         const currentWidth = nextNode.offsetWidth;
-        nextNode.style.width = `${currentWidth-differenceInWidth}px`
+        nextNode.style.width = `${currentWidth-differenceInWidth}pt`
       }
       if(newWidth>cellInfo.initialWidth && row.childNodes.length-1>=indexInRow+1){
         
@@ -119,7 +119,7 @@ const TableResizer = ({ show, cellInfo}: Props): JSX.Element => {
     const row = cell.parentNode!
     row.childNodes.forEach((cellInRow)=>{
       const nodeAsElement = cellInRow as HTMLElement
-      nodeAsElement.style.height = `${newHeight}px`
+      nodeAsElement.style.height = `${newHeight}pt`
     })
 
     const rowTakenHeight = dragDirectionRef.current===DRAG_DIRECTION.TOP? row.previousSibling: row.nextSibling
@@ -131,7 +131,7 @@ const TableResizer = ({ show, cellInfo}: Props): JSX.Element => {
         const currentHeight = nodeAsElement.offsetHeight;
         const differenceInHeight = newHeight-cellInfo.initialHeight
 
-        nodeAsElement.style.height = `${currentHeight-differenceInHeight}px`
+        nodeAsElement.style.height = `${currentHeight-differenceInHeight}pt`
       })
     }
     editorValues.textDocument.saveValue(editorValues.markdownInput.current!.innerHTML, true, true);

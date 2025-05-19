@@ -21,12 +21,14 @@ export function useEditorUpdateActions(markdownInput: React.RefObject<HTMLElemen
 
       const range = passedRange ?? selection!.getRangeAt(0);
       const paragraphs = getNodesInRange(range, ["P", "LI", "TABLE"], markdownInput.current!);
-
+     
       paragraphs.forEach((paragraph) => {
         const element = paragraph as HTMLElement;
         if (callback) {
+       
           callback(element, propertyValue);
         } else {
+      
           element.style[property as any] = propertyValue;
         }
       });

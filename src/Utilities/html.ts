@@ -12,7 +12,6 @@ const htmlDocument = (htmlValue: string) => {
     div{
       box-sizing: border-box;
       width: 210mm;
-      background-color: pink;
       word-break: break-all;
       white-space: pre-wrap;
     }

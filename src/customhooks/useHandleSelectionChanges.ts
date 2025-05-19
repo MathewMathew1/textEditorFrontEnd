@@ -7,6 +7,7 @@ import {
 } from "../Utilities/editors";
 import { EditorUpdate } from "../types/editor";
 import { ALIGN_TYPES } from "../components/Editor";
+import { pxToMm, pxToPt } from "../Utilities/converters";
 
 interface UseSelectionChangeProps {
   markdownInput: React.RefObject<HTMLElement>;
@@ -97,7 +98,7 @@ export function useHandleSelectionChanges({
       getValue("backgroundColor", DEFAULT_VALUES.BackgroundColor)
     );
     setters.setFontSize(
-      parseInt(getValue("fontSize", DEFAULT_VALUES.FontSize)).toString()
+      parseInt( getValue("fontSize", DEFAULT_VALUES.FontSize)).toString()
     );
     setters.setFont(
       getValue("fontFamily", DEFAULT_VALUES.Font).replace(/"/g, "")
@@ -120,8 +121,8 @@ export function useHandleSelectionChanges({
 
     if (paragraphs[0]) {
       const style = window.getComputedStyle(paragraphs[0] as HTMLElement);
-      setters.setMarginLeft(parseInt(style.marginLeft || "0") + "px");
-      setters.setMarginRight(parseInt(style.marginRight || "0") + "px");
+      setters.setMarginLeft(parseInt(style.marginLeft || "0") + "pt");
+      setters.setMarginRight(parseInt(style.marginRight || "0") + "pt");
     }
 
     const pageSpan = Array.from(
@@ -129,8 +130,8 @@ export function useHandleSelectionChanges({
     ).find((node) => selection.containsNode(node, true));
     if (pageSpan) {
       const style = window.getComputedStyle(pageSpan);
-      setters.setPaddingBottom(parseFloat(style.paddingBottom || "0"));
-      setters.setPaddingTop(parseFloat(style.paddingTop || "0"));
+      setters.setPaddingBottom(pxToMm(parseFloat(style.paddingBottom || "0")));
+      setters.setPaddingTop(pxToMm( parseFloat(style.paddingTop || "0")));
     }
 
     const pageIndex = Array.from(
@@ -146,3 +147,5 @@ export function useHandleSelectionChanges({
     setters.setLink(links[0] ? (links[0] as HTMLAnchorElement).href : "");
   }, [markdownInput.current]);
 }
+
+

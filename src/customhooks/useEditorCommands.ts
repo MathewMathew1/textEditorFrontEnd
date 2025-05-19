@@ -1,4 +1,5 @@
 import { EditorState, EditorUpdate } from "../types/editor";
+import { pxToMm } from "../Utilities/converters";
 import {
   changeTag,
   createElementInRange,
@@ -380,9 +381,9 @@ export function useEditorCommands(
     const table = document.createElement("table");
     const tableWidth =
       containerWidth - parseFloat(marginLeft) - parseFloat(marginRight);
-    table.style.marginLeft = marginLeft;
-    table.style.marginRight = marginRight;
-    table.style.border = "1px solid;";
+    table.style.marginLeft = pxToMm( parseInt(marginLeft))+"mm";
+    table.style.marginRight = pxToMm( parseInt(marginRight))+"mm";
+    table.style.border = "1pt solid;";
     table.style.borderCollapse = "collapse";
     table.style.display = "block"; // to prevent selection next to table
     const rowWidth = tableWidth / rows;
@@ -390,12 +391,12 @@ export function useEditorCommands(
     for (let i = 0; i < rows; i++) {
       const row = table.insertRow();
       row.style.minHeight = "1em";
-      row.style.width = `${rowWidth}px`;
+      row.style.width = `${rowWidth}pt`;
       // Create table cells in each row
       for (let j = 0; j < columns; j++) {
         const cell = row.insertCell();
-        cell.style.width = `${rowWidth}px`;
-        cell.style.border = "1px solid black";
+        cell.style.width = `${rowWidth}pt`;
+        cell.style.border = "1pt solid black";
         cell.style.wordBreak = "break-all";
         cell.style.minHeight = "1em";
         cell.style.overflow = "hidden";

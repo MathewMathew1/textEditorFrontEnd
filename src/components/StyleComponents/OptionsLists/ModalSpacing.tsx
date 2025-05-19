@@ -20,7 +20,7 @@ const ModalSpacing = ({isModalOpen, setIsModalOpen, innerRef}: {
 
         editorUpdate.updateParagraphs({
             property: "lineHeight", 
-            propertyValue: `${newLineSpacing}px`, 
+            propertyValue: `${newLineSpacing}pt`, 
             callback: changeValues,
             passedRange: editorValues.savedSelection
         })
@@ -28,8 +28,8 @@ const ModalSpacing = ({isModalOpen, setIsModalOpen, innerRef}: {
 
     const changeValues = (element: HTMLElement, value: string) => {
         element.style.lineHeight = `${lineSpacing.toString()}`
-        element.style.paddingBottom = `${paddingBottom.toString()}px`
-        element.style.paddingTop = `${paddingTop.toString()}px`
+        element.style.paddingBottom = `${paddingBottom.toString()}pt`
+        element.style.paddingTop = `${paddingTop.toString()}pt`
     }
 
     return (

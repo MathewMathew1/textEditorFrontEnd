@@ -598,7 +598,7 @@ const styleSpans = ({
         const newContent = getRangeInnerHTML(rangeInElementTillStartORange);
         if (newContent) {
           const span = elementConverted.cloneNode(true) as HTMLElement;
-          console.log(getRangeInnerHTML(rangeInElementTillStartORange));
+     
           span.innerHTML = getRangeInnerHTML(rangeInElementTillStartORange);
           element.parentNode!.insertBefore(span, element);
         }

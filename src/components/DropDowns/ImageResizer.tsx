@@ -3,6 +3,7 @@ import { ImageResizeInfo } from '../../types';
 import { clamp } from '../../Utilities/colors';
 import { useEditor } from '../../contexts/UseEditorProvider';
 import "./ImageResizer.css";
+import { pxToMm } from '../../Utilities/converters';
 
 const MINIMAL_IMAGE_WIDTH = 40
 const MINIMAL_IMAGE_HEIGHT = 40
@@ -168,8 +169,8 @@ const ImageResizer = ({ show, imageResizerInfo }: Props): JSX.Element => {
       newY += 0.5 * rotatedHDiff * cosFraction;
     }
 
-    setWidth(newWidth);
-    setHeight(newHeight)
+    setWidth(pxToMm(newWidth));
+    setHeight(pxToMm(newHeight))
 
     setStartingPosition((startingPosition) => {
       return {...startingPosition, centerX: newX, centerY: newY}
@@ -196,8 +197,8 @@ const ImageResizer = ({ show, imageResizerInfo }: Props): JSX.Element => {
       imageResizerInfo.centerY, show]);
 
   useEffect(() => {
-    setWidth(imageResizerInfo.width -1)
-    setHeight(imageResizerInfo.height -1)
+    setWidth(pxToMm(imageResizerInfo.width -1))
+    setHeight(pxToMm(imageResizerInfo.height -1))
   }, [imageResizerInfo.height, imageResizerInfo.width, show]);
 
   useEffect(() => {
@@ -205,9 +206,10 @@ const ImageResizer = ({ show, imageResizerInfo }: Props): JSX.Element => {
   }, [imageResizerInfo.rotateDegree, show]);
 
   const onResize = (width: number, height: number, rotateNumber: number) => {
+    console.log(width)
     const image = imageResizerInfo.image
-    image!.style.width = `${width}px`
-    image!.style.height = `${height}px`
+    image!.style.width = `${width}mm`
+    image!.style.height = `${height}mm`
     image!.style.rotate = `${rotateNumber}deg`
     editorValues.textDocument.saveValue(editorValues.markdownInput.current!.innerHTML, true, true)
   }
@@ -218,8 +220,8 @@ const ImageResizer = ({ show, imageResizerInfo }: Props): JSX.Element => {
         <div ref={rectangleRef} className='image-rectangle'
           style={{
             display: show ? 'block' : 'none',              
-            width: width + 'px',
-            height: height + 'px',      
+            width: width + 'mm',
+            height: height + 'mm',      
           }}
         >
           <div onMouseDown={(e) => handleMouseDown(e, DRAG_DIRECTION.TOP_LEFT)} style={{ position: 'absolute', width: '10px', 
